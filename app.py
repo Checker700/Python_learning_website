@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -21,6 +21,8 @@ def init_db():
     conn.commit()
     conn.close()
 
+init_db()
+
 def get_games():
     conn = sqlite3.connect(DB_Path)
     conn.row_factory = sqlite3.Row
@@ -36,9 +38,26 @@ def index():
     games = get_games()
     return render_template('index.html', games=games)
 
-init_db()
+@app.route("/add", methods=["GET", "POST"])
+def add_game():
+    if request.method == 'POST':
+        title = request.form['title']
+        steam_url = request.form["steam"]
+        description = request.form['description']
+        image_url = request.form['image_url']
 
-if __name__ == "__main__":
+        conn = sqlite3.connect(DB_Path)
+        conn.execute("""
+            INSERT INTO games (title, steam_url, description, image_url)
+            VALUES (?, ?, ?, ?)
+        """, (title, steam_url, description, image_url))
+        conn.commit()
+        conn.close()
+
+        return redirect("/")
+    return render_template("add.html")
+
+if __name__ == "__main__": #starting of the app, no code after
     port = port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
