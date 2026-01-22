@@ -31,7 +31,7 @@ def get_games():
 @app.route('/')
 def index():
     games = get_games()
-    return render_template(index.html, games = games)
+    return render_template('index.html', games = games)
 
 if __name__ == "__main__":
     init_db()
