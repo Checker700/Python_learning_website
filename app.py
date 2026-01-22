@@ -7,7 +7,7 @@ app = Flask(__name__)
 DB_Path = 'db/database.db'
 
 def init_db():
-    #os.makedirs('db', exist_ok = True)
+    os.makedirs('db', exist_ok = True)
     conn = sqlite3.connect(DB_Path)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS games (
@@ -39,39 +39,29 @@ def index():
     return render_template('index.html', games=games)
 
 @app.route("/add", methods=["GET", "POST"])
+
 def add_game():
-    if request.method == "POST":
-        return f"""
-        METHOD: {request.method}<br>
-        HEADERS: {dict(request.headers)}<br><br>
-        FORM: {request.form}
-        """
+    if request.method == 'POST':
+        #print("FORM DATA:", request.form) #simple request check
 
+        title = request.form.get('title')
+        steam_url = request.form.get("steam_url")
+        description = request.form.get('description')
+        image_url = request.form.get('image_url')
+
+        if not title or not steam_url: #simple check
+            return "Title and Steam URL are required", 400
+
+        conn = sqlite3.connect(DB_Path)
+        conn.execute("""
+            INSERT INTO games (title, steam_url, description, image_url)
+            VALUES (?, ?, ?, ?)
+        """, (title, steam_url, description, image_url))
+        conn.commit()
+        conn.close()
+
+        return redirect("/")
     return render_template("add.html")
-
-
-#def add_game():
-#    if request.method == 'POST':
-#       print("FORM DATA:", request.form) #simple request check
-#
-#        title = request.form.get('title')
-#        steam_url = request.form.get("steam")
-#        description = request.form.get('description')
-#        image_url = request.form.get('image_url')
-#
-#        if not title or not steam_url: #simple check
-#            return "Title and Steam URL are required", 400
-#
-#        conn = sqlite3.connect(DB_Path)
-#        conn.execute("""
-#            INSERT INTO games (title, steam_url, description, image_url)
-#            VALUES (?, ?, ?, ?)
-#        """, (title, steam_url, description, image_url))
-#        conn.commit()
-#        conn.close()
-#
-#        return redirect("/")
-#    return render_template("add.html")
 
 if __name__ == "__main__": #starting of the app, no code after
     port = port = int(os.environ.get("PORT", 5000))
