@@ -41,6 +41,8 @@ def index():
 @app.route("/add", methods=["GET", "POST"])
 def add_game():
     if request.method == 'POST':
+        print("FORM DATA:", request.form) #simple request check
+
         title = request.form.get('title')
         steam_url = request.form.get("steam")
         description = request.form.get('description')
