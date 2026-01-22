@@ -41,10 +41,13 @@ def index():
 @app.route("/add", methods=["GET", "POST"])
 def add_game():
     if request.method == 'POST':
-        title = request.form['title']
-        steam_url = request.form["steam"]
-        description = request.form['description']
-        image_url = request.form['image_url']
+        title = request.form.get('title')
+        steam_url = request.form.get("steam")
+        description = request.form.get('description')
+        image_url = request.form.get('image_url')
+
+        if not title or not steam_url: #simple check
+            return "Title and Steam URL are required", 400
 
         conn = sqlite3.connect(DB_Path)
         conn.execute("""
