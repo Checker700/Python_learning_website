@@ -3,22 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Steam Demo Games</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card{
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .card img {
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
-    <h1>🎮 Demos Steam</h1>
 
-    {% if games %}
-        <ul>
-        {% for game in games %}
-            <li>
-                <a href="{{ game['steam_url'] }}" target="_blank">
-                    {{ game['title'] }}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>The are no games in db now.</p>
-    {% endif %}
+<body>
+<h1>🎮 Demos Steam</h1>
+
+
+<div class="grid">
+{% for game in games %}
+    <div class="card">
+        {% if game["image_url"] %}
+            <img src="{{ game['image_url']}}">
+        {% endif %}
+        <h3>{{ game["title"] }}</h3>
+        <p>{{ game["description"] or "No description"}}</p>
+        <a href="{{ game['steam_url']}}" target="_blank">Steam</a>
+    </div>
+
+{% endfor %}
+</div>
+
 </body>
 </html>

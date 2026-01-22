@@ -22,9 +22,10 @@ def init_db():
 def get_games():
     conn = sqlite3.connect(DB_Path)
     conn.row_factory = sqlite3.Row
-    games = conn.execute(
-        "SELECT title, steam_url FROM games"
-    ).fetchall()
+    games = conn.execute("""
+        SELECT title, steam_url, description, image_url
+        FROM games
+    """).fetchall()
     conn.close()
     return games
 
