@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html land="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Delete games</title>
 </head>
 <body>
 
-<h1>🗑 Delete games</h1>
+<h1>🗑 Manage games</h1>
 
 <p><a href="/">← Back to main page</a></p>
 
 
 {% if games %}
     <ul>
-    {% for games in games %}
+    {% for game in games %}
         <li style="margin-bottom: 15px;">
             <strong>{{ game.title }}</strong><br>
             <a href="{{ game.steam_url }}" target="_blank">Steam</a>
