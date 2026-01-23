@@ -71,7 +71,7 @@ def delete_page():
 @app.route("/delete/<int:game_id>", methods=["POST"])
 def delete_game(game_id):
     conn = sqlite3.connect(DB_Path)
-    conn.execute("DELETE FROM games WHERE id = ?", (game_id))
+    conn.execute("DELETE FROM games WHERE id = ?", (game_id,))
     conn.commit()
     conn.close()
     return redirect("/delete")
