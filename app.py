@@ -65,8 +65,8 @@ def add_game():
 
 @app.route("/delete")
 def delete_page():
-    game = get_games()
-    return render_template("delete.html", games=game)
+    games = get_games()
+    return render_template("delete.html", games=games)
 
 @app.route("/delete/<int:game_id>", methods=["POST"])
 def delete_game(game_id):
