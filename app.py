@@ -63,6 +63,19 @@ def add_game():
         return redirect("/")
     return render_template("add.html")
 
+@app.route("/delete")
+def delete_page():
+    game = get_games()
+    return render_template("delete.html", games=games)
+
+@app.route("/delete/<int:game_id>", methods=["POST"])
+def delete_game(game_id):
+    conn = sqlite3.connect(DB_Path)
+    conn.execute("DELETE FROM games WHERE id = ?", (game_id))
+    conn.commit()
+    conn.close()
+    return redirect("/delete")
+
 if __name__ == "__main__": #starting of the app, no code after
     port = port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

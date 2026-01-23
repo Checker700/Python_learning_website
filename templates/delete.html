@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html land="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete games</title>
+</head>
+<body>
+
+<h1>🗑 Delete games</h1>
+
+<p><a href="/">← Back to main page</a></p>
+
+
+{% if games %}
+    <ul>
+    {% for games in games %}
+        <li style="margin-bottom: 15px;">
+            <strong>{{ game.title }}</strong><br>
+            <a href="{{ game.steam_url }}" target="_blank">Steam</a>
+
+            <form action="/delete/{{ game.id }}" method="post" style="display:inline;">
+                <button type="submit"
+                        onclick="return confirm('Delete {{ game.title }}?')">
+                    Delete
+                </button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No games yet.</p>
+{% endif %}
+
+
+</body>
+</html>
