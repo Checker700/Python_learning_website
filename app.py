@@ -25,7 +25,7 @@ def init_db():
     # users
     conn.execute("""
         CREATE TABLE IF NOT EXISTS users(
-            id INTEGER PRIMATY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             is_admin INTEGER NOT NULL DEFAULT 0
@@ -87,7 +87,7 @@ def login():
         password = request.form.get("password", "")
 
         conn = sqlite3.connect(DB_Path)
-        conn.row.factory = sqlite3.Row
+        conn.row_factory = sqlite3.Row
         user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
         conn.close()
 
@@ -95,7 +95,7 @@ def login():
             return render_template("login.html", error = "Invalid username or password")
         
         session["user_id"] = user["id"]
-        session["usename"] = user["username"]
+        session["username"] = user["username"]
         return redirect(url_for("admin_home"))
     return render_template("login.html")
 
@@ -147,7 +147,7 @@ def admin_add_game():
         conn.commit()
         conn.close()
 
-        return redirect("admin_delete_page")
+        return redirect(url_for("admin_delete_page"))
     return render_template("add.html")
 
 @app.route("/admin/delete")
@@ -157,12 +157,13 @@ def admin_delete_page():
     return render_template("delete.html", games=games)
 
 @app.route("/admin/delete/<int:game_id>", methods=["POST"])
+@admin_required
 def admin_delete_game(game_id):
     conn = sqlite3.connect(DB_Path)
     conn.execute("DELETE FROM games WHERE id = ?", (game_id,))
     conn.commit()
     conn.close()
-    return redirect("admin_delete_page")
+    return redirect(url_for("admin_delete_page"))
 
 if __name__ == "__main__": #starting of the app, no code after
     port = port = int(os.environ.get("PORT", 5000))
