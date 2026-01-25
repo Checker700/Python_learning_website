@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Admin</title></head>
+<body>
+<h1>Admin panel</h1>
+<p>Logged in as: {{ session.get("username") }}</p>
+
+<ul>
+    <li><a href="/admin/add">➕ Add game</a></li>
+    <li><a href="/admin/delete">🗑 Manage games</a></li>
+    <li><a href="/logout">Logout</a></li>
+</ul>
+
+<p><a href="/">← Back to main</a></p>
+</body>
+</html>

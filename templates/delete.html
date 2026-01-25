@@ -19,7 +19,7 @@
             <strong>{{ game.title }}</strong><br>
             <a href="{{ game.steam_url }}" target="_blank">Steam</a>
 
-            <form action="/delete/{{ game.id }}" method="post" style="display:inline;">
+            <form action="/admin/delete/{{ game.id }}" method="post" style="display:inline;">
                 <button type="submit"
                         onclick="return confirm('Delete {{ game.title }}?')">
                     Delete
